@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class OrdenaStrings {
     public static void main(String[] args) {
@@ -16,6 +17,34 @@ public class OrdenaStrings {
         palavras.add("caelum");
 
        // Comparator<String> comparator = new ComparadorDeStringPorTamanho();
+
+        /*
+        A interface Function vai nos ajudar a passar um objeto para o Comparator
+        .comparing que diz qual será a informação que queremos usar como critério de comparação.
+        Ela recebe dois tipos genéricos. No nosso caso, recebe uma String, que é o tipo que queremos comparar,
+        e um Integer, que é o que queremos extrair dessa string para usar como critério.
+        Poderia até mesmo criar uma classe anônima para implementar essa Function e seu método apply,
+        sem utilizar nenhum lambda. O código ficaria grande e tedioso.
+
+Quisemos quebrar em três linhas para que você pudesse enxergar o que ocorre por trás exatamente. Sem dúvida o palavras.sort(Comparator.comparing(s -> s.length())) é mais fácil de ler.
+         */
+
+        palavras.sort(Comparator.comparing(s -> s.length()));
+        palavras.sort(Comparator.comparing(String::length));
+
+        Function<String, Integer> funcao = s -> s.length();
+
+        palavras.forEach(System.out::println);
+
+        Function<String, Integer> funcaoAntiga = new Function<String, Integer>() {
+            @Override
+            public Integer apply(String s) {
+                return s.length();
+            }
+        };
+
+        Comparator<String> comparador = Comparator.comparing(funcao);
+        palavras.sort(comparador);
 
 
         // Interface Funcional
